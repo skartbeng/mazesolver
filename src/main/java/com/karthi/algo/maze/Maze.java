@@ -7,21 +7,25 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Created by karthi on 04/10/17.
+ * Maze
+ * S - start point
+ * E - end point
+ * # - Wall
+ * . - possible path
  */
 public class Maze {
 
 
-    private char[][] grid;
-    private char[][] maze = {
-            {'#','#','#','#','#','#','#'},
-            {'#',' ',' ',' ',' ',' ','#'},
-            {'#',' ','#',' ','#',' ','#'},
-            {'#',' ','#','E','#',' ','#'},
-            {'#',' ','#','#','#',' ','#'},
-            {'#','S',' ',' ','#',' ','#'},
-            {'#','#','#','#','#','#','#'}
-    };//[row][col]
+    private char[][] grid;//grid[row][col]
+//    private char[][] maze = {
+//            {'#','#','#','#','#','#','#'},
+//            {'#',' ',' ',' ',' ',' ','#'},
+//            {'#',' ','#',' ','#',' ','#'},
+//            {'#',' ','#','E','#',' ','#'},
+//            {'#',' ','#','#','#',' ','#'},
+//            {'#','S',' ',' ','#',' ','#'},
+//            {'#','#','#','#','#','#','#'}
+//    };//[row][col]
 
 
     private Cell startPoint=null;
@@ -87,9 +91,9 @@ public class Maze {
     }
     protected void print() {
         System.out.println("Maze\n");
-        for (int i=0;i<maze.length;i++ ) {
-            for(int j=0;j<maze[i].length;j++){
-                System.out.print(maze[i][j]);
+        for (int i=0;i<grid.length;i++ ) {
+            for(int j=0;j<grid[i].length;j++){
+                System.out.print(grid[i][j]);
             }
             System.out.println();
         }
@@ -97,13 +101,15 @@ public class Maze {
 
     private void solve() {
         final List<Cell> path = new ArrayList<Cell>();
-        char[][] copy = DepthFirst.deepCopy(maze);
+        char[][] copy = DepthFirst.deepCopy(grid);
         DepthFirst.searchPath(copy, startPoint.getColumn(), startPoint.getRow(), path);
 
+        //apply the path cell to the grid
         for (Cell cell:path) {
-            maze[cell.getRow()][cell.getColumn()]=cell.getValue();
+            grid[cell.getRow()][cell.getColumn()]=cell.getValue();
         }
-        maze[startPoint.getRow()][startPoint.getColumn()]=startPoint.getValue();
+        //re-mark the start cell
+        grid[startPoint.getRow()][startPoint.getColumn()]=startPoint.getValue();
     }
 
     public static void main(String[] args) {
